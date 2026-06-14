@@ -11,22 +11,20 @@ import {
   Image,
   FileIcon,
   ExternalLink,
-  Lightbulb,
   Tag,
   Trash2,
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { useState } from 'react'
 import { toast } from 'sonner'
-import { RabbitHole } from './rabbit-hole'
 
 const typeConfig: Record<string, { icon: React.ElementType; color: string; label: string }> = {
-  youtube: { icon: Video, color: 'text-red-600', label: 'YouTube' },
+  youtube: { icon: Video, color: 'text-red-650', label: 'YouTube' },
   instagram: { icon: Camera, color: 'text-pink-600', label: 'Instagram' },
   twitter: { icon: AtSign, color: 'text-sky-600', label: 'Twitter/X' },
   article: { icon: FileText, color: 'text-emerald-600', label: 'Article' },
   screenshot: { icon: Image, color: 'text-amber-600', label: 'Screenshot' },
-  pdf: { icon: FileIcon, color: 'text-violet-600', label: 'PDF' },
+  pdf: { icon: FileIcon, color: 'text-violet-650', label: 'PDF' },
 }
 
 interface ContentCardProps {
@@ -34,9 +32,10 @@ interface ContentCardProps {
   onDelete?: (id: string) => void
   index?: number
   onExtracted?: (item: ContentItem) => void
+  onClick?: (item: ContentItem) => void
 }
 
-export function ContentCard({ item, onDelete, index = 0, onExtracted }: ContentCardProps) {
+export function ContentCard({ item, onDelete, index = 0, onClick }: ContentCardProps) {
   const [deleting, setDeleting] = useState(false)
   const config = typeConfig[item.content_type] || typeConfig.article
   const Icon = config.icon
@@ -64,7 +63,8 @@ export function ContentCard({ item, onDelete, index = 0, onExtracted }: ContentC
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05, duration: 0.3 }}
-      className="group relative glass rounded-3xl p-5 hover:border-indigo-100 transition-all duration-200 hover:bg-white/90 hover:shadow-lg hover:shadow-indigo-500/[0.02] glow"
+      onClick={() => onClick?.(item)}
+      className="group relative glass rounded-3xl p-5 hover:border-indigo-200 transition-all duration-200 hover:shadow-md hover:translate-y-[-1px] cursor-pointer"
     >
       {/* Header */}
       <div className="flex items-start gap-3">
@@ -103,13 +103,17 @@ export function ContentCard({ item, onDelete, index = 0, onExtracted }: ContentC
               href={item.url}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
               className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition-colors"
             >
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
           )}
           <button
-            onClick={handleDelete}
+            onClick={(e) => {
+              e.stopPropagation()
+              handleDelete()
+            }}
             disabled={deleting}
             className="p-1.5 rounded-lg hover:bg-red-50 text-slate-400 hover:text-red-500 transition-colors"
           >
@@ -118,32 +122,15 @@ export function ContentCard({ item, onDelete, index = 0, onExtracted }: ContentC
         </div>
       </div>
 
-      {/* Summary */}
-      {item.summary && (
-        <p className="mt-3 text-xs text-slate-500 leading-relaxed line-clamp-2">{item.summary}</p>
-      )}
-
-      {/* Key insights */}
-      {item.key_insights && item.key_insights.length > 0 && (
-        <div className="mt-3 space-y-1">
-          {item.key_insights.slice(0, 2).map((insight, i) => (
-            <div key={i} className="flex items-start gap-2">
-              <Lightbulb className="w-3.5 h-3.5 text-amber-500 flex-shrink-0 mt-0.5" />
-              <p className="text-[11px] text-slate-500 leading-relaxed line-clamp-1">{insight}</p>
-            </div>
-          ))}
-        </div>
-      )}
-
       {/* Tags */}
       {item.tags && item.tags.length > 0 && (
         <div className="mt-3 flex items-center gap-1.5 flex-wrap">
-          <Tag className="w-2.5 h-2.5 text-slate-300" />
+          <Tag className="w-2.5 h-2.5 text-slate-450" />
           {item.tags.slice(0, 4).map((tag) => (
             <Badge
               key={tag}
               variant="secondary"
-              className="text-[10px] px-1.5 py-0.5 h-5 bg-indigo-50 text-indigo-600 border border-indigo-100 hover:bg-indigo-100/50 transition-colors font-medium"
+              className="text-[10px] px-1.5 py-0.5 h-5 bg-indigo-50 text-indigo-650 border border-indigo-100 hover:bg-indigo-100/50 transition-colors font-medium"
             >
               {tag}
             </Badge>
@@ -152,11 +139,6 @@ export function ContentCard({ item, onDelete, index = 0, onExtracted }: ContentC
             <span className="text-[10px] text-slate-400 font-bold">+{item.tags.length - 4}</span>
           )}
         </div>
-      )}
-
-      {/* Rabbit Hole — mentioned content extractable with one click */}
-      {item.mentioned_content && item.mentioned_content.length > 0 && (
-        <RabbitHole parentId={item.id} items={item.mentioned_content} onExtracted={onExtracted} />
       )}
     </motion.div>
   )

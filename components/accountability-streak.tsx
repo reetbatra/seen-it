@@ -224,7 +224,7 @@ export function AccountabilityStreak() {
         </div>
 
         {/* Tasks Checklist */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 relative z-10">
+        <div className="flex flex-col gap-2 relative z-10">
           {/* Capture Task */}
           <button
             onClick={() => toggleTask('capture')}

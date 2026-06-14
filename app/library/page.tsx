@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { Nav } from '@/components/nav'
 import { ContentCard } from '@/components/content-card'
+import { ContentDrawer } from '@/components/content-drawer'
 import { ContentItem } from '@/types'
 import { Search, Filter, Loader2, Library, Frown } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
@@ -25,6 +26,7 @@ export default function LibraryPage() {
   const [tagFilter, setTagFilter] = useState('')
   const [search, setSearch] = useState('')
   const [allTags, setAllTags] = useState<string[]>([])
+  const [selectedItem, setSelectedItem] = useState<ContentItem | null>(null)
 
   const fetchItems = useCallback(async () => {
     setLoading(true)
@@ -81,12 +83,12 @@ export default function LibraryPage() {
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search your library..."
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl glass text-sm text-slate-800 placeholder-slate-400 outline-none focus:border-indigo-500/40 focus:bg-white/80 transition-all"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl glass text-sm text-slate-805 placeholder-slate-400 outline-none focus:border-indigo-500/40 focus:bg-white transition-all"
             />
           </div>
 
           <div className="flex items-center gap-2 flex-wrap">
-            <Filter className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+            <Filter className="w-3.5 h-3.5 text-slate-450 flex-shrink-0" />
             {TYPE_FILTERS.map(f => (
               <button
                 key={f.value}
@@ -156,13 +158,41 @@ export default function LibraryPage() {
                 key={item.id}
                 item={item}
                 index={i}
-                onDelete={id => setItems(prev => prev.filter(it => it.id !== id))}
-                onExtracted={newItem => setItems(prev => [newItem, ...prev])}
+                onClick={setSelectedItem}
+                onDelete={id => {
+                  setItems(prev => prev.filter(it => it.id !== id))
+                  if (selectedItem?.id === id) setSelectedItem(null)
+                }}
+                onExtracted={newItem => {
+                  setItems(prev => [newItem, ...prev])
+                }}
               />
             ))}
           </motion.div>
         )}
       </main>
+
+      <ContentDrawer
+        item={selectedItem}
+        onClose={() => setSelectedItem(null)}
+        onExtracted={newItem => {
+          setItems(prev => [newItem, ...prev])
+          // Force update selecting item to sync state inside details
+          setSelectedItem(current => {
+            if (!current || current.id !== newItem.parent_id) return current
+            return {
+              ...current,
+              mentioned_content: current.mentioned_content?.map(mention => {
+                if (mention.title === newItem.title) {
+                  // This is just a UI refresh trigger
+                  return mention
+                }
+                return mention
+              })
+            }
+          })
+        }}
+      />
     </div>
   )
 }

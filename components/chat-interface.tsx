@@ -22,7 +22,11 @@ const SUGGESTED = [
   'Summarize my fitness knowledge',
 ]
 
-export function ChatInterface() {
+interface ChatInterfaceProps {
+  onSelectItem?: (item: ContentItem) => void
+}
+
+export function ChatInterface({ onSelectItem }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [streaming, setStreaming] = useState(false)
@@ -173,7 +177,7 @@ export function ChatInterface() {
                     <div className={`px-4 py-3 rounded-2xl text-sm leading-relaxed ${
                       msg.role === 'user'
                         ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-500/10'
-                        : 'text-slate-700'
+                        : 'bg-white border border-slate-100 shadow-sm text-slate-700'
                     }`}>
                       {msg.content || (streaming && msg.role === 'assistant' && (
                         <span className="flex items-center gap-2 text-slate-400">
@@ -194,7 +198,8 @@ export function ChatInterface() {
                             <Badge
                               key={s.id}
                               variant="secondary"
-                              className="text-[10px] bg-slate-100 text-slate-500 border border-slate-200 hover:bg-slate-200/50 cursor-default font-medium"
+                              onClick={() => onSelectItem?.(s)}
+                              className="text-[10px] bg-slate-100 text-slate-500 border border-slate-200 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-100 cursor-pointer font-medium transition-all"
                             >
                               {s.title.slice(0, 40)}{s.title.length > 40 ? '…' : ''}
                             </Badge>

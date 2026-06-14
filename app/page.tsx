@@ -4,12 +4,15 @@ import { Nav } from '@/components/nav'
 import { ChatInterface } from '@/components/chat-interface'
 import { CaptureForm } from '@/components/capture-form'
 import { AccountabilityStreak } from '@/components/accountability-streak'
+import { ContentDrawer } from '@/components/content-drawer'
+import { ContentItem } from '@/types'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { Plus, X } from 'lucide-react'
 
 export default function Home() {
   const [showCapture, setShowCapture] = useState(false)
+  const [selectedItem, setSelectedItem] = useState<ContentItem | null>(null)
 
   return (
     <div className="h-dvh flex flex-col" style={{ background: 'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(99,102,241,0.04) 0%, transparent 70%), #f8fafc' }}>
@@ -18,7 +21,7 @@ export default function Home() {
       <main className="flex-1 flex flex-col overflow-hidden pt-14">
         {/* Quick capture strip */}
         <div className="border-b border-black/[0.03] px-4 py-2.5">
-          <div className="max-w-3xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             {showCapture ? (
               <motion.div
                 initial={{ height: 0, opacity: 0 }}
@@ -48,14 +51,21 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Chat & Tracker */}
-        <div className="flex-1 overflow-hidden flex flex-col max-w-3xl mx-auto w-full px-4 pt-4">
-          <AccountabilityStreak />
-          <div className="flex-1 overflow-hidden mt-4">
-            <ChatInterface />
+        {/* Chat & Tracker Workspace Grid */}
+        <div className="flex-1 overflow-hidden max-w-6xl mx-auto w-full px-4 pt-4 flex flex-col md:flex-row md:gap-6">
+          <div className="flex-1 overflow-hidden flex flex-col min-h-0">
+            <ChatInterface onSelectItem={setSelectedItem} />
+          </div>
+          <div className="w-full md:w-80 flex flex-col flex-shrink-0 min-h-0 mt-4 md:mt-0 pb-4 md:pb-0">
+            <AccountabilityStreak />
           </div>
         </div>
       </main>
+
+      <ContentDrawer
+        item={selectedItem}
+        onClose={() => setSelectedItem(null)}
+      />
     </div>
   )
 }
