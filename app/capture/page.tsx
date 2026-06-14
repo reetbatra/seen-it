@@ -14,9 +14,9 @@ const features = [
 
 export default function CapturePage() {
   return (
-    <div className="min-h-dvh" style={{ background: 'radial-gradient(ellipse 80% 50% at 50% -5%, rgba(99,102,241,0.1) 0%, transparent 60%), #04040a' }}>
+    <div className="min-h-dvh" style={{ background: 'radial-gradient(ellipse 80% 50% at 50% -5%, rgba(99,102,241,0.04) 0%, transparent 60%), #f8fafc' }}>
       <Nav />
-
+ 
       <main className="pt-14 max-w-4xl mx-auto px-4 py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -24,11 +24,11 @@ export default function CapturePage() {
           className="mb-10"
         >
           <h1 className="text-3xl font-semibold gradient-text mb-2">Add Knowledge</h1>
-          <p className="text-sm text-white/40">
+          <p className="text-sm text-slate-500">
             Paste any URL or upload a file. SeenIt extracts everything worth knowing.
           </p>
         </motion.div>
-
+ 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           {/* Form */}
           <motion.div
@@ -41,7 +41,7 @@ export default function CapturePage() {
               <CaptureForm />
             </div>
           </motion.div>
-
+ 
           {/* Features */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
@@ -57,21 +57,21 @@ export default function CapturePage() {
                 transition={{ delay: 0.15 + i * 0.07 }}
                 className="glass rounded-xl p-4 flex gap-3"
               >
-                <div className="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-500/25 flex items-center justify-center flex-shrink-0">
-                  <Icon className="w-4 h-4 text-indigo-400" />
+                <div className="w-8 h-8 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center flex-shrink-0">
+                  <Icon className="w-4 h-4 text-indigo-600" />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold text-white/80 mb-0.5">{title}</p>
-                  <p className="text-[11px] text-white/35 leading-relaxed">{desc}</p>
+                  <p className="text-xs font-semibold text-slate-700 mb-0.5">{title}</p>
+                  <p className="text-[11px] text-slate-400 leading-relaxed">{desc}</p>
                 </div>
               </motion.div>
             ))}
-
+ 
             <div className="glass rounded-xl p-4 mt-2">
-              <p className="text-[10px] font-medium text-white/30 mb-2 uppercase tracking-wider">Supported sources</p>
+              <p className="text-[10px] font-bold text-slate-400 mb-2 uppercase tracking-wider">Supported sources</p>
               <div className="flex flex-wrap gap-1.5">
                 {['YouTube', 'Instagram', 'Twitter/X', 'Medium', 'Substack', 'Any article', 'Screenshots', 'PDFs'].map(s => (
-                  <span key={s} className="text-[10px] px-2 py-0.5 rounded-full bg-white/[0.05] border border-white/[0.07] text-white/40">
+                  <span key={s} className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 border border-slate-200/50 text-slate-500 font-medium">
                     {s}
                   </span>
                 ))}

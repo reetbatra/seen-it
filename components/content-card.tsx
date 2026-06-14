@@ -21,12 +21,12 @@ import { toast } from 'sonner'
 import { RabbitHole } from './rabbit-hole'
 
 const typeConfig: Record<string, { icon: React.ElementType; color: string; label: string }> = {
-  youtube: { icon: Video, color: 'text-red-400', label: 'YouTube' },
-  instagram: { icon: Camera, color: 'text-pink-400', label: 'Instagram' },
-  twitter: { icon: AtSign, color: 'text-sky-400', label: 'Twitter/X' },
-  article: { icon: FileText, color: 'text-emerald-400', label: 'Article' },
-  screenshot: { icon: Image, color: 'text-amber-400', label: 'Screenshot' },
-  pdf: { icon: FileIcon, color: 'text-violet-400', label: 'PDF' },
+  youtube: { icon: Video, color: 'text-red-600', label: 'YouTube' },
+  instagram: { icon: Camera, color: 'text-pink-600', label: 'Instagram' },
+  twitter: { icon: AtSign, color: 'text-sky-600', label: 'Twitter/X' },
+  article: { icon: FileText, color: 'text-emerald-600', label: 'Article' },
+  screenshot: { icon: Image, color: 'text-amber-600', label: 'Screenshot' },
+  pdf: { icon: FileIcon, color: 'text-violet-600', label: 'PDF' },
 }
 
 interface ContentCardProps {
