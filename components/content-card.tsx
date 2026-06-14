@@ -19,12 +19,12 @@ import { useState } from 'react'
 import { toast } from 'sonner'
 
 const typeConfig: Record<string, { icon: React.ElementType; color: string; label: string }> = {
-  youtube: { icon: Video, color: 'text-red-650', label: 'YouTube' },
-  instagram: { icon: Camera, color: 'text-pink-600', label: 'Instagram' },
-  twitter: { icon: AtSign, color: 'text-sky-600', label: 'Twitter/X' },
-  article: { icon: FileText, color: 'text-emerald-600', label: 'Article' },
-  screenshot: { icon: Image, color: 'text-amber-600', label: 'Screenshot' },
-  pdf: { icon: FileIcon, color: 'text-violet-650', label: 'PDF' },
+  youtube: { icon: Video, color: 'text-slate-800', label: 'YouTube' },
+  instagram: { icon: Camera, color: 'text-slate-800', label: 'Instagram' },
+  twitter: { icon: AtSign, color: 'text-slate-800', label: 'Twitter/X' },
+  article: { icon: FileText, color: 'text-slate-800', label: 'Article' },
+  screenshot: { icon: Image, color: 'text-slate-800', label: 'Screenshot' },
+  pdf: { icon: FileIcon, color: 'text-slate-800', label: 'PDF' },
 }
 
 interface ContentCardProps {
@@ -64,7 +64,7 @@ export function ContentCard({ item, onDelete, index = 0, onClick }: ContentCardP
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05, duration: 0.3 }}
       onClick={() => onClick?.(item)}
-      className="group relative glass rounded-3xl p-5 hover:border-indigo-200 transition-all duration-200 hover:shadow-md hover:translate-y-[-1px] cursor-pointer"
+      className="group relative bg-white border border-slate-200/80 rounded-xl p-5 hover:border-slate-400 transition-colors cursor-pointer"
     >
       {/* Header */}
       <div className="flex items-start gap-3">
@@ -104,7 +104,7 @@ export function ContentCard({ item, onDelete, index = 0, onClick }: ContentCardP
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition-colors"
+              className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-450 hover:text-slate-700 transition-colors"
             >
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
@@ -115,7 +115,7 @@ export function ContentCard({ item, onDelete, index = 0, onClick }: ContentCardP
               handleDelete()
             }}
             disabled={deleting}
-            className="p-1.5 rounded-lg hover:bg-red-50 text-slate-400 hover:text-red-500 transition-colors"
+            className="p-1.5 rounded-lg hover:bg-red-50 text-slate-450 hover:text-red-500 transition-colors"
           >
             <Trash2 className="w-3.5 h-3.5" />
           </button>
@@ -125,12 +125,12 @@ export function ContentCard({ item, onDelete, index = 0, onClick }: ContentCardP
       {/* Tags */}
       {item.tags && item.tags.length > 0 && (
         <div className="mt-3 flex items-center gap-1.5 flex-wrap">
-          <Tag className="w-2.5 h-2.5 text-slate-450" />
+          <Tag className="w-3 h-3 text-slate-400" />
           {item.tags.slice(0, 4).map((tag) => (
             <Badge
               key={tag}
               variant="secondary"
-              className="text-[10px] px-1.5 py-0.5 h-5 bg-indigo-50 text-indigo-650 border border-indigo-100 hover:bg-indigo-100/50 transition-colors font-medium"
+              className="text-[10px] px-1.5 py-0.5 h-5 bg-slate-50 text-slate-650 border border-slate-200/60 hover:bg-slate-100 transition-colors font-semibold"
             >
               {tag}
             </Badge>

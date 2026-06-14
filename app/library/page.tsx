@@ -62,7 +62,7 @@ export default function LibraryPage() {
   })
 
   return (
-    <div className="min-h-dvh bg-slate-50/50" style={{ background: 'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(99,102,241,0.04) 0%, transparent 70%), #f8fafc' }}>
+    <div className="min-h-dvh bg-white">
       <Nav />
 
       <main className="pt-14 max-w-6xl mx-auto px-4 py-8">

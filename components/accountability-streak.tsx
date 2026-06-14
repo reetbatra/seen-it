@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Flame, CheckCircle2, Circle, Sparkles, Trophy, HelpCircle } from 'lucide-react'
+import { Flame, CheckCircle2, Circle, Trophy } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { toast } from 'sonner'
 
@@ -19,7 +19,6 @@ export function AccountabilityStreak() {
   const [particles, setParticles] = useState<{ id: number; x: number; y: number; color: string }[]>([])
 
   useEffect(() => {
-    // Load state from localStorage on mount
     const todayStr = new Date().toISOString().split('T')[0]
     const savedStreak = parseInt(localStorage.getItem('seenit_streak') || '0', 10)
     const savedLastActive = localStorage.getItem('seenit_last_active') || ''
@@ -29,18 +28,15 @@ export function AccountabilityStreak() {
     let currentTasks = { capture: false, chat: false, review: false }
     let currentStreak = savedStreak
 
-    // If it's the same day, load today's tasks
     if (savedTasksRaw && savedTasksDate === todayStr) {
       try {
         currentTasks = JSON.parse(savedTasksRaw)
       } catch {}
     } else {
-      // It's a new day! Clear the tasks
       localStorage.setItem('seenit_daily_tasks', JSON.stringify(currentTasks))
       localStorage.setItem('seenit_tasks_date', todayStr)
     }
 
-    // Check if the streak is active or broken
     if (savedLastActive) {
       const lastActiveDate = new Date(savedLastActive)
       const today = new Date(todayStr)
@@ -48,7 +44,6 @@ export function AccountabilityStreak() {
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
 
       if (diffDays > 1 && savedLastActive !== todayStr) {
-        // Streak is broken (more than 1 day since last activity)
         currentStreak = 0
         localStorage.setItem('seenit_streak', '0')
       }
@@ -57,22 +52,19 @@ export function AccountabilityStreak() {
     setStreak(currentStreak)
     setTasks(currentTasks)
     
-    // Check if completed today
     const allDone = currentTasks.capture && currentTasks.chat && currentTasks.review
     setCompletedToday(allDone)
 
-    // Event listener for auto-completing tasks from interactions
     function handleHabitEvent(e: Event) {
       const customEvent = e as CustomEvent<keyof HabitState>
       const taskName = customEvent.detail
       
       setTasks(prev => {
-        if (prev[taskName]) return prev // Already done
+        if (prev[taskName]) return prev
         
         const newTasks = { ...prev, [taskName]: true }
         localStorage.setItem('seenit_daily_tasks', JSON.stringify(newTasks))
 
-        // Check if this completes all tasks
         const isAllDone = newTasks.capture && newTasks.chat && newTasks.review
         if (isAllDone) {
           completeHabitsForToday()
@@ -109,8 +101,8 @@ export function AccountabilityStreak() {
 
   function triggerCelebration() {
     setShowConfetti(true)
-    const colors = ['#4f46e5', '#7c3aed', '#ec4899', '#f97316', '#eab308', '#22c55e']
-    const newParticles = Array.from({ length: 45 }).map((_, i) => ({
+    const colors = ['#0f172a', '#4f46e5', '#6366f1', '#e2e8f0']
+    const newParticles = Array.from({ length: 30 }).map((_, i) => ({
       id: Math.random() + i,
       x: 0,
       y: 0,
@@ -120,10 +112,9 @@ export function AccountabilityStreak() {
     setTimeout(() => {
       setShowConfetti(false)
       setParticles([])
-    }, 3000)
+    }, 2000)
   }
 
-  // Toggle tasks manually (flexibility & overrides)
   function toggleTask(taskName: keyof HabitState) {
     setTasks(prev => {
       const val = !prev[taskName]
@@ -134,7 +125,6 @@ export function AccountabilityStreak() {
       if (isAllDone && !completedToday) {
         completeHabitsForToday()
       } else if (!isAllDone && completedToday) {
-        // Uncompleted a task, reduce streak if active
         setCompletedToday(false)
         const savedLastActive = localStorage.getItem('seenit_last_active') || ''
         const todayStr = new Date().toISOString().split('T')[0]
@@ -155,7 +145,6 @@ export function AccountabilityStreak() {
 
   return (
     <div className="relative w-full">
-      {/* Visual Confetti Emitters */}
       <AnimatePresence>
         {showConfetti && (
           <div className="absolute inset-0 pointer-events-none overflow-visible z-50">
@@ -164,14 +153,14 @@ export function AccountabilityStreak() {
                 key={p.id}
                 initial={{ x: '50%', y: '50%', scale: 1, opacity: 1 }}
                 animate={{
-                  x: `${50 + (Math.random() * 160 - 80)}%`,
-                  y: `${50 - (Math.random() * 120 + 30)}%`,
-                  scale: [1, 1.2, 0.5],
+                  x: `${50 + (Math.random() * 140 - 70)}%`,
+                  y: `${50 - (Math.random() * 100 + 20)}%`,
+                  scale: [1, 1.2, 0.4],
                   rotate: Math.random() * 360,
                   opacity: [1, 1, 0]
                 }}
-                transition={{ duration: 1.5, ease: 'easeOut' }}
-                className="absolute w-2 h-2 rounded-full"
+                transition={{ duration: 1.2, ease: 'easeOut' }}
+                className="absolute w-1.5 h-1.5 rounded-full"
                 style={{ backgroundColor: p.color }}
               />
             ))}
@@ -179,72 +168,56 @@ export function AccountabilityStreak() {
         )}
       </AnimatePresence>
 
-      <div className="gradient-border glass rounded-3xl p-5 glow relative overflow-hidden">
-        {/* Decorative corner glows */}
-        <div className="absolute top-0 right-0 w-24 h-24 bg-orange-500/5 rounded-full blur-2xl" />
-        <div className="absolute bottom-0 left-0 w-24 h-24 bg-indigo-500/5 rounded-full blur-2xl" />
-
+      <div className="border border-slate-100 rounded-2xl p-5 bg-white">
         {/* Top Header Row */}
-        <div className="flex items-center justify-between mb-4 relative z-10">
+        <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Trophy className="w-5 h-5 text-indigo-600" />
-            <div>
-              <h3 className="text-sm font-bold text-slate-800 leading-none">Today's Habits</h3>
-              <p className="text-[10px] text-slate-400 mt-1">Keep growing your knowledge base</p>
-            </div>
+            <Trophy className="w-4 h-4 text-slate-700" />
+            <span className="text-xs font-bold text-slate-800 tracking-tight">Daily Habits</span>
           </div>
 
-          <div className="flex items-center gap-1.5 bg-orange-500/10 border border-orange-500/15 rounded-full px-3 py-1">
-            <motion.div
-              animate={streak > 0 ? { scale: [1, 1.2, 1] } : {}}
-              transition={{ repeat: Infinity, duration: 2, repeatDelay: 3 }}
-            >
-              <Flame className={`w-4 h-4 ${streak > 0 ? 'text-orange-500 fill-orange-500' : 'text-slate-400'}`} />
-            </motion.div>
-            <span className="text-xs font-bold text-orange-600">
-              {streak} {streak === 1 ? 'Day' : 'Days'}
+          <div className="flex items-center gap-1 bg-slate-50 border border-slate-100 rounded-full px-2 py-0.5">
+            <Flame className={`w-3.5 h-3.5 ${streak > 0 ? 'text-slate-800 fill-slate-800' : 'text-slate-400'}`} />
+            <span className="text-[11px] font-bold text-slate-800">
+              {streak}d
             </span>
           </div>
         </div>
 
-        {/* Progress bar info */}
-        <div className="space-y-1.5 mb-4 relative z-10">
-          <div className="flex justify-between items-center text-[10px] text-slate-500 font-semibold uppercase tracking-wider">
+        {/* Progress Bar */}
+        <div className="space-y-1.5 mb-5">
+          <div className="flex justify-between items-center text-[10px] text-slate-400 font-bold uppercase tracking-wider">
             <span>Progress</span>
-            <span className="text-indigo-600 font-bold">{doneCount}/3 Tasks ({pct}%)</span>
+            <span className="text-slate-800 font-bold">{doneCount}/3</span>
           </div>
-          <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+          <div className="h-1 w-full bg-slate-100 rounded-full overflow-hidden">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${pct}%` }}
-              transition={{ duration: 0.4, ease: 'easeOut' }}
-              className="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-orange-500 rounded-full"
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+              className="h-full bg-slate-800 rounded-full"
             />
           </div>
         </div>
 
-        {/* Tasks Checklist */}
-        <div className="flex flex-col gap-2 relative z-10">
+        {/* Checklist */}
+        <div className="space-y-3">
           {/* Capture Task */}
           <button
             onClick={() => toggleTask('capture')}
-            className={`flex items-start gap-2.5 p-3 rounded-2xl text-left border transition-all ${
-              tasks.capture
-                ? 'bg-indigo-50/20 border-indigo-100/50 hover:bg-indigo-50/30'
-                : 'bg-white/40 border-slate-100 hover:border-slate-200 hover:bg-slate-50/50'
-            }`}
+            className="flex items-center gap-3 w-full text-left group cursor-pointer"
           >
             {tasks.capture ? (
-              <CheckCircle2 className="w-4 h-4 text-indigo-600 flex-shrink-0 mt-0.5" />
+              <CheckCircle2 className="w-4.5 h-4.5 text-slate-800 flex-shrink-0" />
             ) : (
-              <Circle className="w-4 h-4 text-slate-300 flex-shrink-0 mt-0.5" />
+              <Circle className="w-4.5 h-4.5 text-slate-200 group-hover:text-slate-400 flex-shrink-0 transition-colors" />
             )}
             <div>
-              <span className={`text-xs font-semibold block leading-tight ${tasks.capture ? 'text-indigo-900 line-through opacity-70' : 'text-slate-700'}`}>
-                1. Capture URL / File
+              <span className={`text-xs font-medium block ${tasks.capture ? 'text-slate-400 line-through' : 'text-slate-700'}`}>
+                Capture content
               </span>
-              <span className="text-[9px] text-slate-400 block mt-0.5 leading-snug">
-                Save any article, video, tweet, or PDF
+              <span className="text-[10px] text-slate-450 block mt-0.5 leading-snug">
+                Save an article, video, or tweet
               </span>
             </div>
           </button>
@@ -252,47 +225,39 @@ export function AccountabilityStreak() {
           {/* Chat Task */}
           <button
             onClick={() => toggleTask('chat')}
-            className={`flex items-start gap-2.5 p-3 rounded-2xl text-left border transition-all ${
-              tasks.chat
-                ? 'bg-indigo-50/20 border-indigo-100/50 hover:bg-indigo-50/30'
-                : 'bg-white/40 border-slate-100 hover:border-slate-200 hover:bg-slate-50/50'
-            }`}
+            className="flex items-center gap-3 w-full text-left group cursor-pointer"
           >
             {tasks.chat ? (
-              <CheckCircle2 className="w-4 h-4 text-indigo-600 flex-shrink-0 mt-0.5" />
+              <CheckCircle2 className="w-4.5 h-4.5 text-slate-800 flex-shrink-0" />
             ) : (
-              <Circle className="w-4 h-4 text-slate-300 flex-shrink-0 mt-0.5" />
+              <Circle className="w-4.5 h-4.5 text-slate-200 group-hover:text-slate-400 flex-shrink-0 transition-colors" />
             )}
             <div>
-              <span className={`text-xs font-semibold block leading-tight ${tasks.chat ? 'text-indigo-900 line-through opacity-70' : 'text-slate-700'}`}>
-                2. Consult the AI
+              <span className={`text-xs font-medium block ${tasks.chat ? 'text-slate-400 line-through' : 'text-slate-700'}`}>
+                Consult AI
               </span>
-              <span className="text-[9px] text-slate-400 block mt-0.5 leading-snug">
-                Ask the chat a question about saved data
+              <span className="text-[10px] text-slate-450 block mt-0.5 leading-snug">
+                Ask a question about your saves
               </span>
             </div>
           </button>
 
-          {/* Review/Rabbit Hole Task */}
+          {/* Review Task */}
           <button
             onClick={() => toggleTask('review')}
-            className={`flex items-start gap-2.5 p-3 rounded-2xl text-left border transition-all ${
-              tasks.review
-                ? 'bg-indigo-50/20 border-indigo-100/50 hover:bg-indigo-50/30'
-                : 'bg-white/40 border-slate-100 hover:border-slate-200 hover:bg-slate-50/50'
-            }`}
+            className="flex items-center gap-3 w-full text-left group cursor-pointer"
           >
             {tasks.review ? (
-              <CheckCircle2 className="w-4 h-4 text-indigo-600 flex-shrink-0 mt-0.5" />
+              <CheckCircle2 className="w-4.5 h-4.5 text-slate-800 flex-shrink-0" />
             ) : (
-              <Circle className="w-4 h-4 text-slate-300 flex-shrink-0 mt-0.5" />
+              <Circle className="w-4.5 h-4.5 text-slate-200 group-hover:text-slate-400 flex-shrink-0 transition-colors" />
             )}
             <div>
-              <span className={`text-xs font-semibold block leading-tight ${tasks.review ? 'text-indigo-900 line-through opacity-70' : 'text-slate-700'}`}>
-                3. Save a Mention
+              <span className={`text-xs font-medium block ${tasks.review ? 'text-slate-400 line-through' : 'text-slate-700'}`}>
+                Save a mention
               </span>
-              <span className="text-[9px] text-slate-400 block mt-0.5 leading-snug">
-                Deep dive by saving a mentioned article
+              <span className="text-[10px] text-slate-450 block mt-0.5 leading-snug">
+                Save a referenced link from Rabbit Hole
               </span>
             </div>
           </button>

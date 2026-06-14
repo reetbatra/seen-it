@@ -174,10 +174,10 @@ export function ChatInterface({ onSelectItem }: ChatInterfaceProps) {
 
                   <div className={`flex-1 max-w-[85%] space-y-2 ${msg.role === 'user' ? 'items-end flex flex-col' : ''}`}>
                     {/* Bubble */}
-                    <div className={`px-4 py-3 rounded-2xl text-sm leading-relaxed ${
+                    <div className={`text-sm leading-relaxed w-full ${
                       msg.role === 'user'
-                        ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-500/10'
-                        : 'bg-white border border-slate-100 shadow-sm text-slate-700'
+                        ? 'px-4 py-2.5 rounded-2xl bg-slate-100 text-slate-800'
+                        : 'text-slate-800 px-1 py-1'
                     }`}>
                       {msg.content || (streaming && msg.role === 'assistant' && (
                         <span className="flex items-center gap-2 text-slate-400">
@@ -217,9 +217,9 @@ export function ChatInterface({ onSelectItem }: ChatInterfaceProps) {
       </div>
 
       {/* Input */}
-      <div className="p-4 border-t border-black/[0.04]">
+      <div className="p-4 border-t border-slate-100">
         <div className="max-w-3xl mx-auto">
-          <div className="relative glass rounded-3xl border border-black/[0.06] focus-within:border-indigo-500/40 focus-within:bg-white transition-all shadow-sm shadow-black/[0.01]">
+          <div className="relative bg-white rounded-xl border border-slate-200 focus-within:border-slate-400 transition-all shadow-sm">
             <textarea
               ref={inputRef}
               value={input}
@@ -227,13 +227,13 @@ export function ChatInterface({ onSelectItem }: ChatInterfaceProps) {
               onKeyDown={handleKeyDown}
               placeholder="Ask anything about your saved knowledge..."
               rows={1}
-              className="w-full px-4 py-3.5 pr-12 bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none resize-none"
+              className="w-full px-4 py-3 pr-12 bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none resize-none"
               style={{ maxHeight: '120px', overflowY: 'auto' }}
             />
             <button
               onClick={() => send()}
               disabled={!input.trim() || streaming}
-              className="absolute right-2 bottom-2.5 p-2 rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-650 hover:bg-indigo-100 transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-sm shadow-indigo-500/5"
+              className="absolute right-2 bottom-2 p-2 rounded-lg bg-slate-900 text-white hover:bg-slate-800 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
             >
               {streaming
                 ? <Loader2 className="w-3.5 h-3.5 animate-spin" />

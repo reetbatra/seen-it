@@ -8,11 +8,11 @@ import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
 
 const TYPE_COLORS: Record<string, string> = {
-  article: 'text-emerald-600 font-semibold',
-  newsletter: 'text-violet-600 font-semibold',
-  video: 'text-red-600 font-semibold',
-  book: 'text-amber-600 font-semibold',
-  podcast: 'text-sky-600 font-semibold',
+  article: 'text-slate-800 font-semibold',
+  newsletter: 'text-slate-800 font-semibold',
+  video: 'text-slate-800 font-semibold',
+  book: 'text-slate-800 font-semibold',
+  podcast: 'text-slate-800 font-semibold',
 }
 
 interface RabbitHoleProps {
@@ -62,7 +62,7 @@ export function RabbitHole({ parentId, items, onExtracted }: RabbitHoleProps) {
     <div className="mt-3 border-t border-black/[0.04] pt-3">
       <button
         onClick={() => setOpen(v => !v)}
-        className="flex items-center gap-2 text-[11px] text-indigo-600 hover:text-indigo-750 transition-colors w-full group"
+        className="flex items-center gap-2 text-[11px] text-slate-800 hover:text-slate-950 transition-colors w-full group"
       >
         <GitBranch className="w-3 h-3" />
         <span className="font-semibold">{items.length} mentioned {items.length === 1 ? 'item' : 'items'} — save with one click</span>
@@ -114,14 +114,14 @@ export function RabbitHole({ parentId, items, onExtracted }: RabbitHoleProps) {
                     )}
 
                     {done[idx] ? (
-                      <span className="flex items-center gap-1 text-[10px] text-emerald-600 font-bold px-2">
+                      <span className="flex items-center gap-1 text-[10px] text-slate-800 font-bold px-2">
                         <CheckCircle2 className="w-3 h-3" /> Saved
                       </span>
                     ) : (
                       <button
                         onClick={() => extract(item, idx)}
                         disabled={loading[idx]}
-                        className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-bold bg-indigo-50 border border-indigo-100 text-indigo-600 hover:bg-indigo-100/50 transition-all disabled:opacity-50"
+                        className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-bold bg-slate-50 border border-slate-200 text-slate-700 hover:bg-slate-100 transition-all disabled:opacity-50"
                       >
                         {loading[idx]
                           ? <Loader2 className="w-2.5 h-2.5 animate-spin" />

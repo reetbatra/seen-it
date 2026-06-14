@@ -8,12 +8,12 @@ import { RabbitHole } from './rabbit-hole'
 import { Badge } from '@/components/ui/badge'
 
 const typeConfig: Record<string, { icon: React.ElementType; color: string; bg: string; label: string }> = {
-  youtube: { icon: Video, color: 'text-red-600', bg: 'bg-red-50 border-red-100', label: 'YouTube' },
-  instagram: { icon: Camera, color: 'text-pink-650', bg: 'bg-pink-50 border-pink-100', label: 'Instagram' },
-  twitter: { icon: AtSign, color: 'text-sky-650', bg: 'bg-sky-50 border-sky-100', label: 'Twitter/X' },
-  article: { icon: FileText, color: 'text-emerald-650', bg: 'bg-emerald-50 border-emerald-100', label: 'Article' },
-  screenshot: { icon: Image, color: 'text-amber-650', bg: 'bg-amber-50 border-amber-100', label: 'Screenshot' },
-  pdf: { icon: FileIcon, color: 'text-violet-650', bg: 'bg-violet-50 border-violet-100', label: 'PDF' },
+  youtube: { icon: Video, color: 'text-slate-800', bg: 'bg-slate-50 border-slate-200/60', label: 'YouTube' },
+  instagram: { icon: Camera, color: 'text-slate-800', bg: 'bg-slate-50 border-slate-200/60', label: 'Instagram' },
+  twitter: { icon: AtSign, color: 'text-slate-800', bg: 'bg-slate-50 border-slate-200/60', label: 'Twitter/X' },
+  article: { icon: FileText, color: 'text-slate-800', bg: 'bg-slate-50 border-slate-200/60', label: 'Article' },
+  screenshot: { icon: Image, color: 'text-slate-800', bg: 'bg-slate-50 border-slate-200/60', label: 'Screenshot' },
+  pdf: { icon: FileIcon, color: 'text-slate-800', bg: 'bg-slate-50 border-slate-200/60', label: 'PDF' },
 }
 
 interface ContentDrawerProps {
@@ -108,7 +108,7 @@ export function ContentDrawer({ item, onClose, onExtracted }: ContentDrawerProps
             {item.summary && (
               <div className="space-y-2">
                 <h3 className="text-xs font-bold text-slate-450 uppercase tracking-wider">Summary</h3>
-                <p className="text-xs text-slate-600 leading-relaxed bg-slate-50/50 p-4 rounded-2xl border border-slate-100">
+                <p className="text-xs text-slate-650 leading-relaxed bg-slate-50/50 p-4 rounded-xl border border-slate-100">
                   {item.summary}
                 </p>
               </div>
@@ -120,8 +120,8 @@ export function ContentDrawer({ item, onClose, onExtracted }: ContentDrawerProps
                 <h3 className="text-xs font-bold text-slate-450 uppercase tracking-wider">Key Insights</h3>
                 <div className="space-y-2.5">
                   {item.key_insights.map((insight, i) => (
-                    <div key={i} className="flex items-start gap-3 bg-amber-50/20 border border-amber-100/30 p-3 rounded-xl">
-                      <Lightbulb className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
+                    <div key={i} className="flex items-start gap-3 bg-slate-50/50 border border-slate-100 p-3 rounded-xl">
+                      <Lightbulb className="w-4 h-4 text-slate-500 flex-shrink-0 mt-0.5" />
                       <p className="text-xs text-slate-650 leading-relaxed">{insight}</p>
                     </div>
                   ))}
@@ -132,12 +132,12 @@ export function ContentDrawer({ item, onClose, onExtracted }: ContentDrawerProps
             {/* Action Items */}
             {item.action_items && item.action_items.length > 0 && (
               <div className="space-y-2">
-                <h3 className="text-xs font-bold text-slate-450 uppercase tracking-wider">Action Items</h3>
+                <h3 className="text-xs font-bold text-slate-455 uppercase tracking-wider">Action Items</h3>
                 <div className="space-y-2.5">
                   {item.action_items.map((action, i) => (
-                    <div key={i} className="flex items-start gap-3 bg-indigo-50/20 border border-indigo-100/30 p-3 rounded-xl">
-                      <CheckSquare className="w-4 h-4 text-indigo-500 flex-shrink-0 mt-0.5" />
-                      <p className="text-xs text-slate-650 leading-relaxed">{action}</p>
+                    <div key={i} className="flex items-start gap-3 bg-slate-50/50 border border-slate-100 p-3 rounded-xl">
+                      <CheckSquare className="w-4 h-4 text-slate-500 flex-shrink-0 mt-0.5" />
+                      <p className="text-xs text-slate-655 leading-relaxed">{action}</p>
                     </div>
                   ))}
                 </div>
@@ -147,12 +147,12 @@ export function ContentDrawer({ item, onClose, onExtracted }: ContentDrawerProps
             {/* Recommendations */}
             {item.recommendations && item.recommendations.length > 0 && (
               <div className="space-y-2">
-                <h3 className="text-xs font-bold text-slate-450 uppercase tracking-wider">Recommendations</h3>
+                <h3 className="text-xs font-bold text-slate-455 uppercase tracking-wider">Recommendations</h3>
                 <div className="space-y-2.5">
                   {item.recommendations.map((rec, i) => (
-                    <div key={i} className="flex items-start gap-3 bg-emerald-50/20 border border-emerald-100/30 p-3 rounded-xl">
-                      <Target className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
-                      <p className="text-xs text-slate-650 leading-relaxed">{rec}</p>
+                    <div key={i} className="flex items-start gap-3 bg-slate-50/50 border border-slate-100 p-3 rounded-xl">
+                      <Target className="w-4 h-4 text-slate-500 flex-shrink-0 mt-0.5" />
+                      <p className="text-xs text-slate-655 leading-relaxed">{rec}</p>
                     </div>
                   ))}
                 </div>
@@ -162,13 +162,13 @@ export function ContentDrawer({ item, onClose, onExtracted }: ContentDrawerProps
             {/* Tags */}
             {item.tags && item.tags.length > 0 && (
               <div className="space-y-2">
-                <h3 className="text-xs font-bold text-slate-450 uppercase tracking-wider">Tags</h3>
+                <h3 className="text-xs font-bold text-slate-455 uppercase tracking-wider">Tags</h3>
                 <div className="flex flex-wrap gap-1.5">
                   {item.tags.map((tag) => (
                     <Badge
                       key={tag}
                       variant="secondary"
-                      className="text-[10px] px-2 py-0.5 h-5.5 bg-slate-50 text-slate-500 border border-slate-200/50 cursor-default font-medium"
+                      className="text-[10px] px-2 py-0.5 h-5.5 bg-slate-50 text-slate-500 border border-slate-200/50 cursor-default font-semibold"
                     >
                       {tag}
                     </Badge>
@@ -179,8 +179,8 @@ export function ContentDrawer({ item, onClose, onExtracted }: ContentDrawerProps
 
             {/* Rabbit Hole (collapsible connection paths) */}
             {item.mentioned_content && item.mentioned_content.length > 0 && (
-              <div className="space-y-2 pt-2 border-t border-slate-100">
-                <h3 className="text-xs font-bold text-slate-450 uppercase tracking-wider">Rabbit Hole Connections</h3>
+              <div className="space-y-2 pt-2 border-t border-slate-150">
+                <h3 className="text-xs font-bold text-slate-455 uppercase tracking-wider">Rabbit Hole Connections</h3>
                 <RabbitHole parentId={item.id} items={item.mentioned_content} onExtracted={onExtracted} />
               </div>
             )}
@@ -193,7 +193,7 @@ export function ContentDrawer({ item, onClose, onExtracted }: ContentDrawerProps
                 href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white transition-colors shadow-sm shadow-indigo-500/10"
+                className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white transition-colors"
               >
                 <ExternalLink className="w-3.5 h-3.5" /> Open Original Source
               </a>
