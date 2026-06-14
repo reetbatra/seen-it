@@ -16,14 +16,14 @@ export function Nav() {
   const pathname = usePathname()
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 h-14 flex items-center px-6 border-b border-white/[0.06]"
-      style={{ background: 'rgba(4,4,10,0.85)', backdropFilter: 'blur(20px)' }}>
+    <nav className="fixed top-0 left-0 right-0 z-50 h-14 flex items-center px-6 border-b border-black/[0.04] glass"
+      style={{ background: 'rgba(255,255,255,0.85)' }}>
       <div className="max-w-6xl mx-auto w-full flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 group">
-          <div className="w-7 h-7 rounded-lg bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center">
-            <Brain className="w-4 h-4 text-indigo-400" />
+          <div className="w-7 h-7 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center">
+            <Brain className="w-4 h-4 text-indigo-600" />
           </div>
-          <span className="text-sm font-semibold gradient-text">SeenIt</span>
+          <span className="text-sm font-bold gradient-text">SeenIt</span>
         </Link>
 
         <div className="flex items-center gap-1">
@@ -33,14 +33,14 @@ export function Nav() {
               <Link
                 key={href}
                 href={href}
-                className={`relative flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                  active ? 'text-white' : 'text-white/40 hover:text-white/70'
+                className={`relative flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+                  active ? 'text-indigo-600' : 'text-slate-500 hover:text-slate-800'
                 }`}
               >
                 {active && (
                   <motion.div
                     layoutId="nav-pill"
-                    className="absolute inset-0 rounded-lg bg-white/[0.07] border border-white/[0.08]"
+                    className="absolute inset-0 rounded-lg bg-indigo-500/5 border border-indigo-500/15"
                     transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
                   />
                 )}
@@ -53,7 +53,7 @@ export function Nav() {
 
         <Link
           href="/capture"
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 hover:bg-indigo-500/30 transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700 transition-colors shadow-sm shadow-indigo-500/10"
         >
           <Plus className="w-3.5 h-3.5" />
           Add content

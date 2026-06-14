@@ -64,35 +64,35 @@ export function ContentCard({ item, onDelete, index = 0, onExtracted }: ContentC
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05, duration: 0.3 }}
-      className="group relative glass rounded-2xl p-4 hover:border-white/14 transition-all duration-200 hover:bg-white/[0.06]"
+      className="group relative glass rounded-3xl p-5 hover:border-indigo-100 transition-all duration-200 hover:bg-white/90 hover:shadow-lg hover:shadow-indigo-500/[0.02] glow"
     >
       {/* Header */}
       <div className="flex items-start gap-3">
         {item.thumbnail_url ? (
-          <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 bg-white/5">
+          <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 bg-slate-50 border border-slate-100">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={item.thumbnail_url} alt="" className="w-full h-full object-cover" />
           </div>
         ) : (
-          <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/8 flex items-center justify-center flex-shrink-0">
+          <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center flex-shrink-0">
             <Icon className={`w-5 h-5 ${config.color}`} />
           </div>
         )}
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            <span className={`text-[10px] font-medium ${config.color} flex items-center gap-1`}>
+            <span className={`text-[10px] font-bold ${config.color} flex items-center gap-1`}>
               <Icon className="w-2.5 h-2.5" />
               {config.label}
             </span>
             {item.source_name && (
-              <span className="text-[10px] text-white/30">· {item.source_name}</span>
+              <span className="text-[10px] text-slate-400 font-semibold">· {item.source_name}</span>
             )}
-            <span className="text-[10px] text-white/25 ml-auto">
+            <span className="text-[10px] text-slate-400 font-medium ml-auto">
               {formatDistanceToNow(item.created_at)}
             </span>
           </div>
-          <h3 className="text-sm font-medium text-white/90 leading-tight line-clamp-2">
+          <h3 className="text-sm font-bold text-slate-800 leading-snug line-clamp-2">
             {item.title}
           </h3>
         </div>
@@ -103,7 +103,7 @@ export function ContentCard({ item, onDelete, index = 0, onExtracted }: ContentC
               href={item.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-1.5 rounded-lg hover:bg-white/8 text-white/30 hover:text-white/70 transition-colors"
+              className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition-colors"
             >
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
@@ -111,7 +111,7 @@ export function ContentCard({ item, onDelete, index = 0, onExtracted }: ContentC
           <button
             onClick={handleDelete}
             disabled={deleting}
-            className="p-1.5 rounded-lg hover:bg-red-500/10 text-white/30 hover:text-red-400 transition-colors"
+            className="p-1.5 rounded-lg hover:bg-red-50 text-slate-400 hover:text-red-500 transition-colors"
           >
             <Trash2 className="w-3.5 h-3.5" />
           </button>
@@ -120,7 +120,7 @@ export function ContentCard({ item, onDelete, index = 0, onExtracted }: ContentC
 
       {/* Summary */}
       {item.summary && (
-        <p className="mt-3 text-xs text-white/50 leading-relaxed line-clamp-2">{item.summary}</p>
+        <p className="mt-3 text-xs text-slate-500 leading-relaxed line-clamp-2">{item.summary}</p>
       )}
 
       {/* Key insights */}
@@ -128,8 +128,8 @@ export function ContentCard({ item, onDelete, index = 0, onExtracted }: ContentC
         <div className="mt-3 space-y-1">
           {item.key_insights.slice(0, 2).map((insight, i) => (
             <div key={i} className="flex items-start gap-2">
-              <Lightbulb className="w-3 h-3 text-amber-400/60 flex-shrink-0 mt-0.5" />
-              <p className="text-[11px] text-white/40 leading-relaxed line-clamp-1">{insight}</p>
+              <Lightbulb className="w-3.5 h-3.5 text-amber-500 flex-shrink-0 mt-0.5" />
+              <p className="text-[11px] text-slate-500 leading-relaxed line-clamp-1">{insight}</p>
             </div>
           ))}
         </div>
@@ -138,18 +138,18 @@ export function ContentCard({ item, onDelete, index = 0, onExtracted }: ContentC
       {/* Tags */}
       {item.tags && item.tags.length > 0 && (
         <div className="mt-3 flex items-center gap-1.5 flex-wrap">
-          <Tag className="w-2.5 h-2.5 text-white/20" />
+          <Tag className="w-2.5 h-2.5 text-slate-300" />
           {item.tags.slice(0, 4).map((tag) => (
             <Badge
               key={tag}
               variant="secondary"
-              className="text-[10px] px-1.5 py-0 h-4 bg-indigo-500/10 text-indigo-300/70 border-indigo-500/20 hover:bg-indigo-500/20"
+              className="text-[10px] px-1.5 py-0.5 h-5 bg-indigo-50 text-indigo-600 border border-indigo-100 hover:bg-indigo-100/50 transition-colors font-medium"
             >
               {tag}
             </Badge>
           ))}
           {item.tags.length > 4 && (
-            <span className="text-[10px] text-white/25">+{item.tags.length - 4}</span>
+            <span className="text-[10px] text-slate-400 font-bold">+{item.tags.length - 4}</span>
           )}
         </div>
       )}

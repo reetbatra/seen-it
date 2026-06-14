@@ -8,11 +8,11 @@ import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
 
 const TYPE_COLORS: Record<string, string> = {
-  article: 'text-emerald-400',
-  newsletter: 'text-violet-400',
-  video: 'text-red-400',
-  book: 'text-amber-400',
-  podcast: 'text-sky-400',
+  article: 'text-emerald-600 font-semibold',
+  newsletter: 'text-violet-600 font-semibold',
+  video: 'text-red-600 font-semibold',
+  book: 'text-amber-600 font-semibold',
+  podcast: 'text-sky-600 font-semibold',
 }
 
 interface RabbitHoleProps {
@@ -40,6 +40,10 @@ export function RabbitHole({ parentId, items, onExtracted }: RabbitHoleProps) {
       if (!res.ok) throw new Error(data.error)
       setDone(prev => ({ ...prev, [idx]: data.item }))
       onExtracted?.(data.item)
+      
+      // Dispatch habit tracker update
+      window.dispatchEvent(new CustomEvent('seenit-habit-task', { detail: 'review' }))
+      
       toast.success(data.already_existed ? 'Already in your library' : `Saved: ${data.item.title}`)
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Failed to extract')
@@ -55,13 +59,13 @@ export function RabbitHole({ parentId, items, onExtracted }: RabbitHoleProps) {
   }
 
   return (
-    <div className="mt-3 border-t border-white/[0.06] pt-3">
+    <div className="mt-3 border-t border-black/[0.04] pt-3">
       <button
         onClick={() => setOpen(v => !v)}
-        className="flex items-center gap-2 text-[11px] text-indigo-400/80 hover:text-indigo-300 transition-colors w-full group"
+        className="flex items-center gap-2 text-[11px] text-indigo-600 hover:text-indigo-750 transition-colors w-full group"
       >
         <GitBranch className="w-3 h-3" />
-        <span className="font-medium">{items.length} mentioned {items.length === 1 ? 'item' : 'items'} — save with one click</span>
+        <span className="font-semibold">{items.length} mentioned {items.length === 1 ? 'item' : 'items'} — save with one click</span>
         <span className="ml-auto">
           {open ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
         </span>
@@ -80,19 +84,19 @@ export function RabbitHole({ parentId, items, onExtracted }: RabbitHoleProps) {
               {items.map((item, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center gap-2 rounded-xl bg-white/[0.03] border border-white/[0.06] px-3 py-2"
+                  className="flex items-center gap-2 rounded-xl bg-slate-50 border border-slate-100 px-3 py-2"
                 >
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs text-white/70 font-medium truncate">{item.title}</p>
+                    <p className="text-xs text-slate-700 font-bold truncate">{item.title}</p>
                     <div className="flex items-center gap-1.5 mt-0.5">
                       <Badge
                         variant="secondary"
-                        className={`text-[9px] px-1 py-0 h-3.5 border-0 bg-transparent ${TYPE_COLORS[item.type] || 'text-white/40'}`}
+                        className={`text-[9px] px-1 py-0 h-3.5 border-0 bg-transparent ${TYPE_COLORS[item.type] || 'text-slate-400 font-semibold'}`}
                       >
                         {item.type}
                       </Badge>
                       {item.publication && (
-                        <span className="text-[10px] text-white/30 truncate">{item.publication}</span>
+                        <span className="text-[10px] text-slate-400 font-medium truncate">{item.publication}</span>
                       )}
                     </div>
                   </div>
@@ -103,21 +107,21 @@ export function RabbitHole({ parentId, items, onExtracted }: RabbitHoleProps) {
                         href={item.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="p-1 rounded-md text-white/25 hover:text-white/60 transition-colors"
+                        className="p-1 rounded-md text-slate-300 hover:text-slate-600 transition-colors"
                       >
-                        <ExternalLink className="w-3 h-3" />
+                        <ExternalLink className="w-3.5 h-3.5" />
                       </a>
                     )}
 
                     {done[idx] ? (
-                      <span className="flex items-center gap-1 text-[10px] text-emerald-400 px-2">
+                      <span className="flex items-center gap-1 text-[10px] text-emerald-600 font-bold px-2">
                         <CheckCircle2 className="w-3 h-3" /> Saved
                       </span>
                     ) : (
                       <button
                         onClick={() => extract(item, idx)}
                         disabled={loading[idx]}
-                        className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-medium bg-indigo-500/15 border border-indigo-500/25 text-indigo-300 hover:bg-indigo-500/25 transition-all disabled:opacity-50"
+                        className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-bold bg-indigo-50 border border-indigo-100 text-indigo-600 hover:bg-indigo-100/50 transition-all disabled:opacity-50"
                       >
                         {loading[idx]
                           ? <Loader2 className="w-2.5 h-2.5 animate-spin" />
@@ -133,7 +137,7 @@ export function RabbitHole({ parentId, items, onExtracted }: RabbitHoleProps) {
               {items.length > 1 && Object.keys(done).length < items.length && (
                 <button
                   onClick={extractAll}
-                  className="w-full text-center text-[10px] text-white/35 hover:text-white/55 transition-colors py-1"
+                  className="w-full text-center text-[10px] font-bold text-slate-400 hover:text-slate-600 transition-colors py-1"
                 >
                   Save all {items.length - Object.keys(done).length} at once
                 </button>

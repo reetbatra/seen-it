@@ -60,41 +60,41 @@ export default function LibraryPage() {
   })
 
   return (
-    <div className="min-h-dvh" style={{ background: '#04040a' }}>
+    <div className="min-h-dvh bg-slate-50/50" style={{ background: 'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(99,102,241,0.04) 0%, transparent 70%), #f8fafc' }}>
       <Nav />
 
       <main className="pt-14 max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-semibold gradient-text">Library</h1>
-            <p className="text-xs text-white/30 mt-0.5">{items.length} items saved</p>
+            <h1 className="text-2xl font-bold gradient-text">Library</h1>
+            <p className="text-xs text-slate-400 mt-0.5">{items.length} items saved</p>
           </div>
         </div>
 
         {/* Search + filters */}
         <div className="space-y-3 mb-6">
           <div className="relative">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/25" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input
               type="text"
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search your library..."
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl glass text-sm text-white/80 placeholder-white/25 outline-none focus:border-indigo-500/40 transition-all"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl glass text-sm text-slate-800 placeholder-slate-400 outline-none focus:border-indigo-500/40 focus:bg-white/80 transition-all"
             />
           </div>
 
           <div className="flex items-center gap-2 flex-wrap">
-            <Filter className="w-3.5 h-3.5 text-white/25 flex-shrink-0" />
+            <Filter className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
             {TYPE_FILTERS.map(f => (
               <button
                 key={f.value}
                 onClick={() => setTypeFilter(f.value)}
-                className={`px-3 py-1 rounded-lg text-[11px] font-medium transition-all ${
+                className={`px-3 py-1 rounded-lg text-[11px] font-semibold transition-all ${
                   typeFilter === f.value
-                    ? 'bg-indigo-500/20 text-indigo-200 border border-indigo-500/30'
-                    : 'text-white/40 hover:text-white/60 bg-white/[0.03] border border-white/[0.06]'
+                    ? 'bg-indigo-500/10 text-indigo-700 border border-indigo-500/25 shadow-sm shadow-indigo-500/5'
+                    : 'text-slate-500 hover:text-slate-700 bg-white border border-slate-100 hover:bg-slate-50/50'
                 }`}
               >
                 {f.label}
@@ -109,10 +109,10 @@ export default function LibraryPage() {
                   key={tag}
                   variant="secondary"
                   onClick={() => setTagFilter(tagFilter === tag ? '' : tag)}
-                  className={`text-[10px] cursor-pointer transition-all ${
+                  className={`text-[10px] cursor-pointer font-medium transition-all ${
                     tagFilter === tag
-                      ? 'bg-indigo-500/25 text-indigo-200 border-indigo-500/40'
-                      : 'bg-white/[0.03] text-white/35 border-white/[0.06] hover:bg-white/[0.07]'
+                      ? 'bg-indigo-500/15 text-indigo-700 border border-indigo-500/30'
+                      : 'bg-white text-slate-500 border border-slate-100 hover:bg-slate-50/50'
                   }`}
                 >
                   {tag}
@@ -125,23 +125,23 @@ export default function LibraryPage() {
         {/* Content */}
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-6 h-6 text-indigo-400/50 animate-spin" />
+            <Loader2 className="w-6 h-6 text-indigo-600 animate-spin" />
           </div>
         ) : filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center">
             {items.length === 0 ? (
               <>
-                <Library className="w-10 h-10 text-white/15 mb-4" />
-                <p className="text-sm text-white/40 mb-1">Your library is empty</p>
-                <p className="text-xs text-white/25">
+                <Library className="w-10 h-10 text-slate-300 mb-4" />
+                <p className="text-sm font-semibold text-slate-500 mb-1">Your library is empty</p>
+                <p className="text-xs text-slate-400">
                   Add your first piece of content from the{' '}
-                  <a href="/capture" className="text-indigo-400 hover:underline">capture page</a>
+                  <a href="/capture" className="text-indigo-600 hover:underline">capture page</a>
                 </p>
               </>
             ) : (
               <>
-                <Frown className="w-10 h-10 text-white/15 mb-4" />
-                <p className="text-sm text-white/40">No items match your search</p>
+                <Frown className="w-10 h-10 text-slate-300 mb-4" />
+                <p className="text-sm font-semibold text-slate-500">No items match your search</p>
               </>
             )}
           </div>

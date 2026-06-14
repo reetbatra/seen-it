@@ -45,6 +45,9 @@ export function ChatInterface() {
     setMessages(prev => [...prev, userMsg, assistantMsg])
     setStreaming(true)
 
+    // Dispatch habit tracker task check-off
+    window.dispatchEvent(new CustomEvent('seenit-habit-task', { detail: 'chat' }))
+
     abortRef.current = new AbortController()
 
     try {
@@ -119,11 +122,11 @@ export function ChatInterface() {
               transition={{ duration: 0.4 }}
               className="text-center mb-8"
             >
-              <div className="w-14 h-14 rounded-2xl bg-indigo-500/15 border border-indigo-500/25 flex items-center justify-center mx-auto mb-4">
-                <Brain className="w-7 h-7 text-indigo-400" />
+              <div className="w-14 h-14 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mx-auto mb-4">
+                <Brain className="w-7 h-7 text-indigo-650" />
               </div>
-              <h2 className="text-xl font-semibold text-white/90 mb-2">Ask your knowledge base</h2>
-              <p className="text-sm text-white/40 max-w-xs">
+              <h2 className="text-xl font-bold text-slate-800 mb-2">Ask your knowledge base</h2>
+              <p className="text-sm text-slate-400 max-w-xs">
                 Search everything you've ever saved. SeenIt remembers so you don't have to.
               </p>
             </motion.div>
@@ -136,7 +139,7 @@ export function ChatInterface() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.06, duration: 0.3 }}
                   onClick={() => send(s)}
-                  className="text-left px-3.5 py-3 rounded-xl glass text-xs text-white/50 hover:text-white/80 hover:bg-white/[0.06] transition-all leading-relaxed border-transparent hover:border-white/[0.1]"
+                  className="text-left px-3.5 py-3 rounded-xl glass text-xs text-slate-500 hover:text-indigo-650 hover:bg-white hover:border-indigo-150 hover:shadow-md hover:shadow-indigo-500/[0.02] transition-all leading-relaxed border border-slate-100/80"
                 >
                   {s}
                 </motion.button>
@@ -156,12 +159,12 @@ export function ChatInterface() {
                   {/* Avatar */}
                   <div className={`w-7 h-7 rounded-lg flex-shrink-0 flex items-center justify-center ${
                     msg.role === 'user'
-                      ? 'bg-white/10'
-                      : 'bg-indigo-500/20 border border-indigo-500/30'
+                      ? 'bg-slate-200 text-slate-600'
+                      : 'bg-indigo-50 border border-indigo-100'
                   }`}>
                     {msg.role === 'user'
-                      ? <User className="w-3.5 h-3.5 text-white/60" />
-                      : <Brain className="w-3.5 h-3.5 text-indigo-400" />
+                      ? <User className="w-3.5 h-3.5 text-slate-500" />
+                      : <Brain className="w-3.5 h-3.5 text-indigo-650" />
                     }
                   </div>
 
@@ -169,11 +172,11 @@ export function ChatInterface() {
                     {/* Bubble */}
                     <div className={`px-4 py-3 rounded-2xl text-sm leading-relaxed ${
                       msg.role === 'user'
-                        ? 'bg-white/[0.07] text-white/85 border border-white/[0.06]'
-                        : 'text-white/80'
+                        ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-500/10'
+                        : 'text-slate-700'
                     }`}>
                       {msg.content || (streaming && msg.role === 'assistant' && (
-                        <span className="flex items-center gap-2 text-white/30">
+                        <span className="flex items-center gap-2 text-slate-400">
                           <Loader2 className="w-3.5 h-3.5 animate-spin" />
                           Searching your knowledge...
                         </span>
@@ -183,7 +186,7 @@ export function ChatInterface() {
                     {/* Sources */}
                     {msg.sources && msg.sources.length > 0 && (
                       <div className="space-y-1">
-                        <p className="text-[10px] text-white/25 flex items-center gap-1 ml-1">
+                        <p className="text-[10px] text-slate-400 flex items-center gap-1 ml-1 font-semibold">
                           <BookOpen className="w-2.5 h-2.5" /> From your library
                         </p>
                         <div className="flex flex-wrap gap-1.5">
@@ -191,7 +194,7 @@ export function ChatInterface() {
                             <Badge
                               key={s.id}
                               variant="secondary"
-                              className="text-[10px] bg-white/[0.04] text-white/40 border-white/[0.06] hover:bg-white/[0.07] cursor-default"
+                              className="text-[10px] bg-slate-100 text-slate-500 border border-slate-200 hover:bg-slate-200/50 cursor-default font-medium"
                             >
                               {s.title.slice(0, 40)}{s.title.length > 40 ? '…' : ''}
                             </Badge>
@@ -209,9 +212,9 @@ export function ChatInterface() {
       </div>
 
       {/* Input */}
-      <div className="p-4 border-t border-white/[0.06]">
+      <div className="p-4 border-t border-black/[0.04]">
         <div className="max-w-3xl mx-auto">
-          <div className="relative glass rounded-2xl border border-white/[0.08] focus-within:border-indigo-500/40 transition-all">
+          <div className="relative glass rounded-3xl border border-black/[0.06] focus-within:border-indigo-500/40 focus-within:bg-white transition-all shadow-sm shadow-black/[0.01]">
             <textarea
               ref={inputRef}
               value={input}
@@ -219,13 +222,13 @@ export function ChatInterface() {
               onKeyDown={handleKeyDown}
               placeholder="Ask anything about your saved knowledge..."
               rows={1}
-              className="w-full px-4 py-3.5 pr-12 bg-transparent text-sm text-white/85 placeholder-white/25 outline-none resize-none"
+              className="w-full px-4 py-3.5 pr-12 bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none resize-none"
               style={{ maxHeight: '120px', overflowY: 'auto' }}
             />
             <button
               onClick={() => send()}
               disabled={!input.trim() || streaming}
-              className="absolute right-2 bottom-2.5 p-2 rounded-xl bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 hover:bg-indigo-500/30 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+              className="absolute right-2 bottom-2.5 p-2 rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-650 hover:bg-indigo-100 transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-sm shadow-indigo-500/5"
             >
               {streaming
                 ? <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -233,7 +236,7 @@ export function ChatInterface() {
               }
             </button>
           </div>
-          <p className="text-center text-[10px] text-white/20 mt-2">
+          <p className="text-center text-[10px] text-slate-400 mt-2 font-medium">
             SeenIt searches your personal knowledge base · Press Enter to send
           </p>
         </div>

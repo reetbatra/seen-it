@@ -151,7 +151,7 @@ export function DailyDigest() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-32">
-        <Loader2 className="w-6 h-6 text-indigo-400/50 animate-spin" />
+        <Loader2 className="w-6 h-6 text-indigo-500/50 animate-spin" />
       </div>
     )
   }
@@ -160,12 +160,12 @@ export function DailyDigest() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <div className="flex items-center gap-2 text-[11px] text-white/30 mb-1">
+        <div className="flex items-center gap-2 text-[11px] text-slate-400 mb-1">
           <CalendarDays className="w-3 h-3" />
           {date ? prettyDate(date) : 'Today'}
         </div>
         <h1 className="text-2xl font-semibold gradient-text">Today&apos;s digest</h1>
-        <p className="text-xs text-white/35 mt-0.5">
+        <p className="text-xs text-slate-500 mt-0.5">
           One read, one watch. Clear both to keep your streak alive. Refreshes at 8am.
         </p>
       </div>
@@ -178,7 +178,7 @@ export function DailyDigest() {
               initial={{ opacity: 0, y: 10, scale: 0.8 }}
               animate={{ opacity: 1, y: -4, scale: 1 }}
               exit={{ opacity: 0, y: -20 }}
-              className="absolute right-4 top-3 flex items-center gap-1 text-amber-300 text-sm font-bold z-10"
+              className="absolute right-4 top-3 flex items-center gap-1 text-amber-600 text-sm font-bold z-10"
             >
               <Sparkles className="w-3.5 h-3.5" /> +{justEarned}
             </motion.div>
@@ -186,20 +186,20 @@ export function DailyDigest() {
         </AnimatePresence>
 
         <div className="grid grid-cols-3 gap-3">
-          <Stat icon={Star} color="text-indigo-300" value={progress.points} label="points" />
-          <Stat icon={Flame} color="text-orange-400" value={progress.streak} label="day streak" />
-          <Stat icon={Trophy} color="text-amber-300" value={progress.longestStreak} label="best streak" />
+          <Stat icon={Star} color="text-indigo-500" value={progress.points} label="points" />
+          <Stat icon={Flame} color="text-orange-500" value={progress.streak} label="day streak" />
+          <Stat icon={Trophy} color="text-amber-500" value={progress.longestStreak} label="best streak" />
         </div>
 
         {/* Level progress */}
         <div className="mt-4">
-          <div className="flex items-center justify-between text-[10px] text-white/35 mb-1.5">
-            <span className="font-medium text-white/55">Level {level}</span>
+          <div className="flex items-center justify-between text-[10px] text-slate-400 mb-1.5">
+            <span className="font-medium text-slate-600">Level {level}</span>
             <span>{levelPct}/100 to level {level + 1}</span>
           </div>
-          <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+          <div className="h-1.5 rounded-full bg-slate-200/50 overflow-hidden">
             <motion.div
-              className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-violet-400"
+              className="h-full rounded-full bg-gradient-to-r from-indigo-600 to-violet-500"
               initial={false}
               animate={{ width: `${levelPct}%` }}
               transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
@@ -239,7 +239,7 @@ export function DailyDigest() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="flex items-center justify-center gap-2 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.06] py-3 text-sm font-medium text-emerald-300"
+            className="flex items-center justify-center gap-2 rounded-2xl border border-emerald-500/20 bg-emerald-50 py-3 text-sm font-medium text-emerald-700"
           >
             <Trophy className="w-4 h-4" />
             Daily complete. See you tomorrow at 8am.
@@ -268,27 +268,27 @@ function Stat({
         key={value}
         initial={{ scale: 1.3 }}
         animate={{ scale: 1 }}
-        className="text-lg font-bold text-white/90 leading-none"
+        className="text-lg font-bold text-slate-800 leading-none"
       >
         {value}
       </motion.span>
-      <span className="text-[10px] text-white/35 mt-0.5">{label}</span>
+      <span className="text-[10px] text-slate-400 mt-0.5">{label}</span>
     </div>
   )
 }
 
 const ACCENTS: Record<string, { ring: string; iconBg: string; iconText: string; btn: string }> = {
   emerald: {
-    ring: 'border-emerald-500/30',
-    iconBg: 'bg-emerald-500/10 border-emerald-500/20',
-    iconText: 'text-emerald-400',
-    btn: 'bg-emerald-500/15 border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/25',
+    ring: 'border-emerald-500/30 shadow-sm shadow-emerald-500/5',
+    iconBg: 'bg-emerald-50 border-emerald-100',
+    iconText: 'text-emerald-600',
+    btn: 'bg-emerald-50 border-emerald-200 text-emerald-700 hover:bg-emerald-100',
   },
   rose: {
-    ring: 'border-rose-500/30',
-    iconBg: 'bg-rose-500/10 border-rose-500/20',
-    iconText: 'text-rose-400',
-    btn: 'bg-rose-500/15 border-rose-500/30 text-rose-300 hover:bg-rose-500/25',
+    ring: 'border-rose-500/30 shadow-sm shadow-rose-500/5',
+    iconBg: 'bg-rose-50 border-rose-100',
+    iconText: 'text-rose-600',
+    btn: 'bg-rose-50 border-rose-200 text-rose-700 hover:bg-rose-100',
   },
 }
 
@@ -315,15 +315,15 @@ function TaskCard({
   if (!item) {
     return (
       <div className="glass rounded-2xl p-4 border-dashed">
-        <div className="flex items-center gap-2 text-xs text-white/40">
-          <Icon className="w-4 h-4 text-white/25" />
-          <span className="font-medium text-white/55">{label}</span>
+        <div className="flex items-center gap-2 text-xs text-slate-500">
+          <Icon className="w-4 h-4 text-slate-400" />
+          <span className="font-medium text-slate-700">{label}</span>
         </div>
-        <p className="text-[11px] text-white/30 mt-2">
+        <p className="text-[11px] text-slate-400 mt-2">
           {poolEmpty
             ? `No ${label.toLowerCase()} available yet. `
             : 'Nothing picked for today. '}
-          <a href="/capture" className="text-indigo-400 hover:underline">Add more content</a> to fill your queue.
+          <a href="/capture" className="text-indigo-600 hover:text-indigo-700 hover:underline font-medium">Add more content</a> to fill your queue.
         </p>
       </div>
     )
@@ -333,32 +333,32 @@ function TaskCard({
     <motion.div
       animate={done ? { scale: [1, 1.015, 1] } : {}}
       transition={{ duration: 0.3 }}
-      className={`relative glass rounded-2xl p-4 transition-all ${done ? a.ring : 'hover:border-white/14'}`}
+      className={`relative glass rounded-2xl p-4 transition-all ${done ? a.ring : 'hover:border-slate-200 hover:shadow-md hover:shadow-slate-100/50'}`}
     >
       <div className="flex items-center gap-2 mb-3">
         <div className={`w-7 h-7 rounded-lg border flex items-center justify-center ${a.iconBg}`}>
           <Icon className={`w-3.5 h-3.5 ${a.iconText}`} />
         </div>
-        <span className="text-xs font-semibold text-white/70">{label}</span>
+        <span className="text-xs font-semibold text-slate-600">{label}</span>
         {item.source_name && (
-          <span className="text-[10px] text-white/30 ml-auto">{item.source_name}</span>
+          <span className="text-[10px] text-slate-400 ml-auto">{item.source_name}</span>
         )}
       </div>
 
       <div className="flex items-start gap-3">
         {item.thumbnail_url ? (
-          <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-white/5">
+          <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-slate-100 border border-slate-200/50">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={item.thumbnail_url} alt="" className="w-full h-full object-cover" />
           </div>
         ) : null}
 
         <div className="flex-1 min-w-0">
-          <h3 className={`text-sm font-medium leading-tight line-clamp-2 transition-colors ${done ? 'text-white/40 line-through' : 'text-white/90'}`}>
+          <h3 className={`text-sm font-semibold leading-tight line-clamp-2 transition-colors ${done ? 'text-slate-400 line-through' : 'text-slate-800'}`}>
             {item.title}
           </h3>
           {item.summary && (
-            <p className="text-[11px] text-white/40 leading-relaxed line-clamp-2 mt-1">{item.summary}</p>
+            <p className="text-[11px] text-slate-500 leading-relaxed line-clamp-2 mt-1">{item.summary}</p>
           )}
         </div>
       </div>
@@ -369,7 +369,7 @@ function TaskCard({
             href={item.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-medium text-white/55 bg-white/[0.04] border border-white/[0.07] hover:bg-white/[0.08] transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-medium text-slate-600 bg-slate-50 border border-slate-200/60 hover:bg-slate-100 hover:text-slate-800 transition-colors"
           >
             <ExternalLink className="w-3 h-3" /> Open
           </a>
@@ -378,7 +378,7 @@ function TaskCard({
           onClick={onToggle}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-medium border transition-all ml-auto ${
             done
-              ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-300'
+              ? 'bg-emerald-100 border-emerald-200 text-emerald-800 hover:bg-emerald-200/70'
               : a.btn
           }`}
         >
