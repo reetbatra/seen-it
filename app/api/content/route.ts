@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let query = (getSupabaseAdmin() as any)
     .from('content_items')
-    .select('id, url, content_type, title, summary, key_insights, tags, thumbnail_url, author, source_name, created_at')
+    .select('id, url, content_type, title, summary, key_insights, tags, thumbnail_url, author, source_name, created_at, parent_id, mentioned_content')
     .order('created_at', { ascending: false })
     .range(offset, offset + limit - 1)
 

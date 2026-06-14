@@ -18,6 +18,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { useState } from 'react'
 import { toast } from 'sonner'
+import { RabbitHole } from './rabbit-hole'
 
 const typeConfig: Record<string, { icon: React.ElementType; color: string; label: string }> = {
   youtube: { icon: Video, color: 'text-red-400', label: 'YouTube' },
@@ -32,9 +33,10 @@ interface ContentCardProps {
   item: ContentItem
   onDelete?: (id: string) => void
   index?: number
+  onExtracted?: (item: ContentItem) => void
 }
 
-export function ContentCard({ item, onDelete, index = 0 }: ContentCardProps) {
+export function ContentCard({ item, onDelete, index = 0, onExtracted }: ContentCardProps) {
   const [deleting, setDeleting] = useState(false)
   const config = typeConfig[item.content_type] || typeConfig.article
   const Icon = config.icon
@@ -150,6 +152,11 @@ export function ContentCard({ item, onDelete, index = 0 }: ContentCardProps) {
             <span className="text-[10px] text-white/25">+{item.tags.length - 4}</span>
           )}
         </div>
+      )}
+
+      {/* Rabbit Hole — mentioned content extractable with one click */}
+      {item.mentioned_content && item.mentioned_content.length > 0 && (
+        <RabbitHole parentId={item.id} items={item.mentioned_content} onExtracted={onExtracted} />
       )}
     </motion.div>
   )

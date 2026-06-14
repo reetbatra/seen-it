@@ -33,6 +33,7 @@ export async function POST(req: NextRequest) {
         author,
         source_name: source,
         content_type_specific: knowledge.content_type_specific || {},
+        mentioned_content: knowledge.mentioned_content || [],
       })
       .select()
       .single()

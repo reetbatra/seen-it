@@ -3,10 +3,11 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { Brain, Library, Clock, MessageSquare, Plus } from 'lucide-react'
+import { Brain, Library, Clock, MessageSquare, Plus, Sun } from 'lucide-react'
 
 const links = [
   { href: '/', label: 'Chat', icon: MessageSquare },
+  { href: '/daily', label: 'Today', icon: Sun },
   { href: '/library', label: 'Library', icon: Library },
   { href: '/timeline', label: 'Timeline', icon: Clock },
 ]

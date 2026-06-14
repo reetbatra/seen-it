@@ -14,8 +14,9 @@ export interface ContentItem {
   thumbnail_url?: string
   author?: string
   source_name?: string
+  parent_id?: string | null
+  mentioned_content?: MentionedContent[]
   created_at: string
-  embedding?: number[]
 }
 
 export interface ChatMessage {
@@ -26,6 +27,13 @@ export interface ChatMessage {
   sources?: ContentItem[]
 }
 
+export interface MentionedContent {
+  title: string
+  publication?: string
+  url?: string | null
+  type: 'article' | 'newsletter' | 'video' | 'book' | 'podcast'
+}
+
 export interface ExtractedKnowledge {
   title: string
   summary: string
@@ -34,6 +42,7 @@ export interface ExtractedKnowledge {
   recommendations: string[]
   tags: string[]
   content_type_specific?: Record<string, string[]>
+  mentioned_content?: MentionedContent[]
 }
 
 export interface TimelineMonth {

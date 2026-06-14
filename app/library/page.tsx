@@ -157,6 +157,7 @@ export default function LibraryPage() {
                 item={item}
                 index={i}
                 onDelete={id => setItems(prev => prev.filter(it => it.id !== id))}
+                onExtracted={newItem => setItems(prev => [newItem, ...prev])}
               />
             ))}
           </motion.div>

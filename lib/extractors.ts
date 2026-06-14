@@ -121,9 +121,18 @@ Return ONLY valid JSON matching this schema exactly:
     "concepts": ["concept name", ...],
     "recipes": ["recipe name", ...],
     "exercises": ["exercise name", ...]
-  }
+  },
+  "mentioned_content": [
+    {
+      "title": "exact article/newsletter/video title",
+      "publication": "publication name e.g. Substack newsletter name, website, YouTube channel",
+      "url": "full URL if explicitly mentioned in the content, otherwise null",
+      "type": "article | newsletter | video | book | podcast"
+    }
+  ]
 }
-Extract 3-8 key insights. Tags should be lowercase single words or short phrases. Be specific and extract concrete knowledge.`
+Extract 3-8 key insights. Tags should be lowercase single words or short phrases. Be specific.
+IMPORTANT: For mentioned_content, extract every specific article, newsletter issue, video, or piece of content that is explicitly recommended or referenced. If someone says "read X by Y on Z platform", capture it. If a URL is visible, include it exactly.`
 
 export async function extractKnowledge(
   content: string,
@@ -153,6 +162,7 @@ export async function extractKnowledge(
     recommendations: Array.isArray(raw.recommendations) ? raw.recommendations : [],
     tags: Array.isArray(raw.tags) ? raw.tags : [],
     content_type_specific: raw.content_type_specific || {},
+    mentioned_content: Array.isArray(raw.mentioned_content) ? raw.mentioned_content : [],
   }
 }
 

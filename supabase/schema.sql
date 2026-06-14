@@ -31,3 +31,7 @@ create index if not exists content_items_created_at_idx
 -- Index for tag filtering (library page)
 create index if not exists content_items_tags_idx
   on content_items using gin (tags);
+
+-- Add parent_id for rabbit-hole linked content (run this if table already exists)
+alter table content_items add column if not exists parent_id uuid references content_items(id) on delete cascade;
+alter table content_items add column if not exists mentioned_content jsonb default '[]';
