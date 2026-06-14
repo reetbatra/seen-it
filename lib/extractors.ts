@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio'
 import { ContentType, ExtractedKnowledge } from '@/types'
-import { openai } from './openai'
+import { anthropic } from './anthropic'
 
 export function detectContentType(url: string): ContentType {
   if (/youtube\.com|youtu\.be/.test(url)) return 'youtube'
@@ -17,7 +17,6 @@ export async function fetchPageContent(url: string): Promise<{
   source?: string
 }> {
   const type = detectContentType(url)
-
   if (type === 'youtube') return fetchYouTube(url)
   if (type === 'twitter') return fetchTwitter(url)
   if (type === 'instagram') return fetchInstagram(url)
@@ -29,7 +28,6 @@ async function fetchYouTube(url: string) {
   const res = await fetch(oEmbedUrl)
   const data = res.ok ? await res.json() : {}
 
-  // Also fetch the page to get description
   let description = ''
   let thumbnail = data.thumbnail_url || ''
   try {
@@ -86,7 +84,6 @@ async function fetchArticle(url: string) {
   const html = await res.text()
   const $ = cheerio.load(html)
 
-  // Remove noise
   $('script, style, nav, footer, header, aside, .ad, .advertisement, .sidebar').remove()
 
   const title = $('meta[property="og:title"]').attr('content') || $('title').text() || 'Article'
@@ -96,19 +93,13 @@ async function fetchArticle(url: string) {
     $('[rel="author"]').first().text() ||
     undefined
 
-  // Extract main content
-  const contentEl =
-    $('article').first() ||
-    $('main').first() ||
-    $('[role="main"]').first() ||
-    $('body')
+  const contentEl = $('article').first().length
+    ? $('article').first()
+    : $('main').first().length
+    ? $('main').first()
+    : $('body')
 
-  const text = contentEl
-    .text()
-    .replace(/\s+/g, ' ')
-    .trim()
-    .slice(0, 6000)
-
+  const text = contentEl.text().replace(/\s+/g, ' ').trim().slice(0, 6000)
   const source = new URL(url).hostname.replace('www.', '')
 
   return { text, title, thumbnail, author, source }
@@ -138,20 +129,22 @@ export async function extractKnowledge(
   content: string,
   contentType: ContentType
 ): Promise<ExtractedKnowledge> {
-  const response = await openai.chat.completions.create({
-    model: 'gpt-4o',
+  const response = await anthropic.messages.create({
+    model: 'claude-haiku-4-5-20251001',
+    max_tokens: 1024,
+    system: EXTRACTION_SYSTEM_PROMPT,
     messages: [
-      { role: 'system', content: EXTRACTION_SYSTEM_PROMPT },
       {
         role: 'user',
         content: `Content type: ${contentType}\n\nContent:\n${content.slice(0, 6000)}`,
       },
     ],
-    response_format: { type: 'json_object' },
-    temperature: 0.3,
   })
 
-  const raw = JSON.parse(response.choices[0].message.content || '{}')
+  const text = response.content[0].type === 'text' ? response.content[0].text : '{}'
+  const jsonMatch = text.match(/\{[\s\S]*\}/)
+  const raw = jsonMatch ? JSON.parse(jsonMatch[0]) : {}
+
   return {
     title: raw.title || 'Untitled',
     summary: raw.summary || '',
@@ -167,27 +160,31 @@ export async function extractFromImageBase64(
   base64: string,
   mimeType: string
 ): Promise<{ text: string; title: string }> {
-  const response = await openai.chat.completions.create({
-    model: 'gpt-4o',
+  const validMime = (mimeType === 'image/jpeg' || mimeType === 'image/png' || mimeType === 'image/gif' || mimeType === 'image/webp')
+    ? mimeType as 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp'
+    : 'image/jpeg' as const
+
+  const response = await anthropic.messages.create({
+    model: 'claude-haiku-4-5-20251001',
+    max_tokens: 2000,
     messages: [
       {
         role: 'user',
         content: [
           {
-            type: 'text',
-            text: 'Describe all the text and information visible in this image. Extract everything readable.',
+            type: 'image',
+            source: { type: 'base64', media_type: validMime, data: base64 },
           },
           {
-            type: 'image_url',
-            image_url: { url: `data:${mimeType};base64,${base64}` },
+            type: 'text',
+            text: 'Describe all the text and information visible in this image. Extract everything readable.',
           },
         ],
       },
     ],
-    max_tokens: 2000,
   })
 
-  const text = response.choices[0].message.content || ''
-  const titleMatch = text.match(/^(.{0,80})/)?.[1] || 'Screenshot'
-  return { text, title: titleMatch }
+  const text = response.content[0].type === 'text' ? response.content[0].text : ''
+  const title = text.slice(0, 80) || 'Screenshot'
+  return { text, title }
 }

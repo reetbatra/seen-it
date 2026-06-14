@@ -1,7 +1,6 @@
 export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { detectContentType, fetchPageContent, extractKnowledge } from '@/lib/extractors'
-import { generateEmbedding } from '@/lib/openai'
 import { getSupabaseAdmin } from '@/lib/supabase'
 
 export async function POST(req: NextRequest) {
@@ -17,8 +16,6 @@ export async function POST(req: NextRequest) {
     }
 
     const knowledge = await extractKnowledge(text, contentType)
-    const embeddingText = `${knowledge.title} ${knowledge.summary} ${knowledge.key_insights.join(' ')} ${knowledge.tags.join(' ')}`
-    const embedding = await generateEmbedding(embeddingText)
 
     const { data, error } = await (getSupabaseAdmin() as any)
       .from('content_items')
@@ -36,7 +33,6 @@ export async function POST(req: NextRequest) {
         author,
         source_name: source,
         content_type_specific: knowledge.content_type_specific || {},
-        embedding,
       })
       .select()
       .single()
